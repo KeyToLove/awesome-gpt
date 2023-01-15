@@ -1,0 +1,12 @@
+{
+  "name": "chatgpt-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "pnpm install"
+  },
+  "keywords": [],
+  "author": "KeyToLove<coderEDC@163.com>",
+  "license": "ISC"
+}
