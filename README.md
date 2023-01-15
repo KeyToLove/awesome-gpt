@@ -1,4 +1,4 @@
-# 一个 chatgpt demo, 目前基于 openai
+# 一个 chatgpt demo, 基于 openai
 
 ## 功能
 
