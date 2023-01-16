@@ -8,12 +8,15 @@
 ## 如何使用
 
 1. 克隆本项目
-2. 根目录执行 `pnpm bootstrap`
+2. 根目录执行 `pnpm run bootstrap`
+
+- 由于项目采用 `pnpm Monorepo `的模式，因此你需要事先具备 `pnpm` 环境,可通过 `npm i pnpm -g` 安装
+
 3. 补充 `OPENAI_API_KEY` 信息
 
-- 在 [openai](https://beta.openai.com/) 生成你的 `OPENAI_API_KEY` , 有账号的话直接生成一个即可，没有的话需要先创建账号，具体可以自行搜索如果创建 openai 账号
+- 在 [openai](https://beta.openai.com/) 生成你的 `OPENAI_API_KEY` , 有账号的话直接生成一个即可，没有的话需要先创建账号，具体可以自行搜索如何创建 openai 账号，由于 `openai` 地区限制，该环节可能需要科学上网
 
-`OPENAI_API_KEY`生成方式如下图所示
+`OPENAI_API_KEY` 生成方式如下图所示
 
 <img src="./guide.jpg">
 
