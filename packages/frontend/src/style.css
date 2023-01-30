@@ -15,6 +15,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body {
+  margin: 8px;
+}
+
 button {
   color: #fff;
   border-radius: 8px;

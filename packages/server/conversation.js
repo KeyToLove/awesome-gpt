@@ -1,7 +1,7 @@
 // import { ChatGPTAPIBrowser, getOpenAIAuth } from 'chatgpt'
 import { Configuration, OpenAIApi } from 'openai'
 
-export async function conversation(prompt, res) {
+export async function conversation(prompt, res, isChat = false) {
   // 暂不可用
   // const openAIAuth = await getOpenAIAuth({
   //   email: process.env.OPENAI_EMAIL,
@@ -25,6 +25,7 @@ export async function conversation(prompt, res) {
       max_tokens: 2048,
       temperature: 0,
       stream: true,
+      stop: isChat ? ['\n提问:', '\nAI:'] : null,
     },
     {
       responseType: 'stream',

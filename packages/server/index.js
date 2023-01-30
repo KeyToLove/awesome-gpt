@@ -36,6 +36,18 @@ app.post('/conversation', async (req, res) => {
     ' 句子里面的单词拼写对不对？这句子的语法对不对？帮我翻译成中文，并且告诉我这句话相关的语法知识,在给我举出几个类似的英语句子'
   conversation(text + makeUpQuestions, res)
 })
+
+// AI对话
+app.post('/chat', async (req, res) => {
+  const text = req.body?.text
+  res.setHeader('Cache-Control', 'no-cache')
+  res.setHeader('Content-Type', 'text/event-stream')
+  res.setHeader('Connection', 'keep-alive')
+  res.setHeader('Cookie', 'chatPrompt=1234')
+  res.flushHeaders()
+  conversation(text, res, true)
+})
+
 app.listen(9000, () => {
   console.log('serve is running at http://localhost:9000')
 })
