@@ -79,7 +79,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="action">
-            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown.enter="send">
+            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown.enter="send" maxlength="50">
             <n-spin :show="loading" size="small">
                 <button @click="send">发送</button>
             </n-spin>
@@ -112,8 +112,17 @@ h1 {
             border-radius: 100%;
         }
 
+        &-text {
+            padding: 5px;
+            border-radius: 4px;
+        }
+
         &-ai {
             float: left;
+
+            .item-text {
+                background: gray;
+            }
 
             .item-image {
                 margin-right: 15px;
@@ -123,6 +132,11 @@ h1 {
         &-user {
             float: right;
             flex-direction: row-reverse;
+
+            .item-text {
+                background: seagreen;
+
+            }
 
             .item-image {
                 margin-left: 15px;
