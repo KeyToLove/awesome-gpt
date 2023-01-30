@@ -1,11 +1,17 @@
-# 一个 chatgpt demo, 基于 openai
+# AI 对话模型, 基于 openai
 
-## 功能
+## 功能 🌟
+
+### Demo-1
 
 - 根据输入生成符合描述的图片
 - 输入英文检查拼写是否正确，是否存在语法问题，翻译成中文并补充相关示例
 
-## 如何使用
+### Demo-2
+
+- 类似 chatgpt 的 AI 对话机器人 🤖️
+
+## 如何使用 🔧
 
 1. 克隆本项目
 2. 根目录执行 `pnpm run bootstrap`
@@ -39,3 +45,9 @@ packages/server 目录
 ```cmd
 pnpm run start
 ```
+
+## 功能截图
+
+<img src="./demo-1.jpg">
+
+<img src="./demo-2.jpg">

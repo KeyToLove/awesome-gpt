@@ -33,7 +33,7 @@ app.post('/conversation', async (req, res) => {
   res.setHeader('Connection', 'keep-alive')
   res.flushHeaders()
   const makeUpQuestions =
-    ' 句子里面的单词拼写对不对？这句子的语法对不对？帮我翻译成中文，并且告诉我这句话相关的语法知识,在给我举出几个类似的英语句子'
+    ' 句子里面的单词拼写对不对？这句子的语法对不对？帮我翻译成中文,再给我举出几个类似的英语句子'
   conversation(text + makeUpQuestions, res)
 })
 
@@ -43,7 +43,6 @@ app.post('/chat', async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Connection', 'keep-alive')
-  res.setHeader('Cookie', 'chatPrompt=1234')
   res.flushHeaders()
   conversation(text, res, true)
 })

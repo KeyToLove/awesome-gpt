@@ -12,7 +12,12 @@ window.addEventListener('hashchange', () => {
   currentPath.value = window.location.hash
 })
 const currentView = computed(() => {
+  // @ts-ignore
   return routes[currentPath.value.slice(1) || '/'] || Demo1
+})
+
+const activeRoute = computed(() => {
+  return currentPath.value === '#/demo-2' ? 'demo-2' : 'demo-1'
 })
 
 const go = (path: string) => {
@@ -23,8 +28,8 @@ const go = (path: string) => {
 
 <template>
   <div class="nav">
-    <button @click="go('demo-1')">Demo-1</button>
-    <button @click="go('demo-2')">Demo-2</button>
+    <button @click="go('demo-1')" :class="{ active: activeRoute === 'demo-1' }">Demo-1</button>
+    <button @click="go('demo-2')" :class="{ active: activeRoute === 'demo-2' }">Demo-2</button>
   </div>
   <component :is="currentView"></Component>
 </template>
@@ -35,6 +40,10 @@ const go = (path: string) => {
 
   button {
     margin-right: 6px;
+
+    &.active {
+      background: darkslategray;
+    }
   }
 }
 </style>
