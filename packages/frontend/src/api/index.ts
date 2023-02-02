@@ -68,13 +68,4 @@ export function conversation(text: string, onMessage: (data: string) => void) {
       console.log(err, 'error~~')
     },
   })
-  // const es = new EventSource(`/api/conversation?text=${text}`)
-  // es.onmessage = d => {
-  //   if (d.data === '[DONE]') {
-  //     es.close()
-  //     return
-  //   }
-  //   const text = JSON.parse(d.data).choices[0].text
-  //   onMessage(text)
-  // }
 }
