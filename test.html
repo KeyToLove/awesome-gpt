@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Markdown Example</title>
+    <meta charset="utf-8" />
+    <!-- 引入 marked.js 和 highlight.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/index.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.min.css"
+    />
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script>
+      // 将Markdown渲染为HTML并高亮代码
+      const markdown =
+        '# Hello, world!\n\n```js\nconsole.log("Hello, world!");\n```'
+      const html = marked(markdown)
+      document.getElementById('content').innerHTML = html
+    </script>
+  </body>
+</html>

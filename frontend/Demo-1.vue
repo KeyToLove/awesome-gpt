@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { generateImage, conversation } from './api'
-import { NSpin } from 'naive-ui'
+import { NSpin, useMessage } from 'naive-ui'
 
+const props = defineProps({
+    userOpenAIKey: String
+})
+
+const message = useMessage()
 const imgSrc = ref<string>("")
 const text = ref<string>("")
 const answer = ref<string>("")
@@ -14,6 +19,9 @@ const globalLoading = computed(() => {
 })
 const check = () => {
     if (globalLoading.value) return
+    if (!props.userOpenAIKey) {
+        return message.info("openai key不能为空")
+    }
     reset()
     getImage()
     analyse()
@@ -24,24 +32,39 @@ const reset = () => {
     imgSrc.value = ""
 }
 
-const getImage = () => {
+const getImage = async () => {
     imageLoading.value = true
-    generateImage(text.value).then(res => {
-        imgSrc.value = res.data.data
-    }).finally(() => {
-        imageLoading.value = false
+    const data = await generateImage(text.value, {
+        userOpenAIKey: props.userOpenAIKey,
     })
+    if (!data?.data) {
+        imageLoading.value = false
+        return message.error(data.message)
+    }
+    const url = data?.data[0]?.url
+    imgSrc.value = url
+    imageLoading.value = false
 }
 
 const analyse = () => {
     answerLoading.value = true
-    conversation(text.value, str => {
-        if (answerLoading.value) {
+    conversation(text.value, {
+        userOpenAIKey: props.userOpenAIKey,
+        onMessage: (str: string) => {
+            if (answerLoading.value) {
+                answerLoading.value = false
+            }
+            answer.value += str
+            if (answerBox.value) {
+                answerBox.value.scrollTop = answerBox.value.scrollHeight
+            }
+        },
+        onError: (msg: string) => {
+            console.log('error message:', msg);
+            message.error(msg || '服务异常')
+        },
+        onFinally: () => {
             answerLoading.value = false
-        }
-        answer.value += str
-        if (answerBox.value) {
-            answerBox.value.scrollTop = answerBox.value.scrollHeight
         }
     })
 }

@@ -1,6 +1,0 @@
-POST http://localhost:9000/chat HTTP/1.1
-content-type: application/json
-
-{
-    "text":"hello world"
-}

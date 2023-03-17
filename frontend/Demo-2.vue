@@ -1,48 +1,75 @@
-<script lang="ts" setup>import { nextTick, onMounted, ref } from 'vue';
-import { NSpin } from 'naive-ui'
+<script lang="ts" setup>
+import { nextTick, onMounted, ref } from 'vue';
+import { NSpin, useMessage } from 'naive-ui'
+import { marked } from 'marked';
+import hljs from 'highlight.js'
 import { chatApi } from './api'
 import user_avatar from './assets/user_avatar.jpeg'
 import ai_avatar from './assets/ai_avatar.webp'
+const render = new marked.Renderer()
+marked.setOptions({
+    renderer: render, // 这是必填项
+    gfm: true,	// 启动类似于Github样式的Markdown语法
+    pedantic: false, // 只解析符合Markdwon定义的，不修正Markdown的错误
+    sanitize: false, // 原始输出，忽略HTML标签（关闭后，可直接渲染HTML标签）
+
+    // 高亮的语法规范
+    highlight: (code, lang) => hljs.highlight(code, { language: lang }).value,
+})
+
+const props = defineProps({
+    userOpenAIKey: String
+})
+const message = useMessage()
 const text = ref<string>("")
 const loading = ref<boolean>(false)
 interface chatItem {
-    type: 'User' | 'Ai',
+    role: 'user' | 'assistant',
     content: string
 }
 const chatList = ref<chatItem[]>([])
 const contentRef = ref()
 const send = () => {
+    if (!props.userOpenAIKey) {
+        return message.info("openai key不能为空")
+    }
     if (loading.value || !text.value.trim()) return
     loading.value = true
     chatList.value.push({
-        type: 'User',
+        role: 'user',
         content: text.value
     })
     nextTick(moveToBottom)
-    // 拼接对话上下文
-    const prompt = getChatHistory() + `\n提问:` + text.value + `\nAI:`
     text.value = ''
     // 记录AI回复内容
     let content = ""
-    chatApi(prompt, msg => {
-        console.log(msg);
-        if (msg) {
-            if (!content) {
-                chatList.value.push({
-                    type: 'Ai',
-                    content: msg
-                })
-            } else {
-                chatList.value[chatList.value.length - 1].content = content
+    chatApi(chatList.value, {
+        userOpenAIKey: props.userOpenAIKey,
+        onMessage: (msg: string) => {
+            if (msg) {
+                const newContent = content + msg
+                if (!content) {
+                    chatList.value.push({
+                        role: 'assistant',
+                        content: msg
+                    })
+                } else {
+                    chatList.value[chatList.value.length - 1].content = newContent
+                }
+                content = newContent
+                moveToBottom()
             }
-            content += msg
-            moveToBottom()
+        },
+        onError: (msg: string) => {
+            console.log('error message:', msg);
+            message.error(msg || '服务异常')
+        },
+        onFinally: () => {
+            loading.value = false
+            // 加载完消息所有内容用 markdown渲染来高亮
+            console.log('content:', content);
+            chatList.value[chatList.value.length - 1].content = marked(content)
         }
-    }, () => {
-        window.localStorage.setItem('AI_CHAT', JSON.stringify({
-            data: prompt + content
-        }))
-        loading.value = false
     })
 }
 
@@ -52,16 +79,9 @@ const moveToBottom = () => {
 }
 // 重置聊天上下文
 const reset = () => {
-    window.localStorage.setItem("AI_CHAT", JSON.stringify({
-        data: ""
-    }))
     chatList.value = []
 }
 
-const getChatHistory = () => {
-    const temp = window.localStorage.getItem('AI_CHAT')
-    return temp ? JSON.parse(temp)?.data : ""
-}
 
 onMounted(() => {
     reset()
@@ -71,10 +91,12 @@ onMounted(() => {
     <div id="container">
         <h1>AI - Chat</h1>
         <div class="content" ref="contentRef">
-            <div v-for="item in chatList" :class="['item', item.type === 'Ai' ? 'item-ai' : 'item-user']">
-                <img class="item-image" :src="item.type === 'User' ? user_avatar : ai_avatar" alt="">
-                <div class="item-text">
+            <div v-for="item in chatList" :class="['item', item.role === 'assistant' ? 'item-ai' : 'item-user']">
+                <img class="item-image" :src="item.role === 'user' ? user_avatar : ai_avatar" alt="">
+                <div class="item-text" v-if="item.role === 'user'">
                     {{ item.content }}
+                </div>
+                <div class="item-text" v-else v-html="item.content">
                 </div>
             </div>
         </div>
@@ -121,7 +143,7 @@ h1 {
             float: left;
 
             .item-text {
-                background: gray;
+                border: 1px solid gray;
             }
 
             .item-image {
