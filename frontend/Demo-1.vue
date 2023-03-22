@@ -130,7 +130,7 @@ const analyse = () => {
 
 #action {
     position: absolute;
-    top: 520px;
+    top: 540px;
     left: 50%;
     transform: translateX(-50%);
 

@@ -5,9 +5,9 @@ export const config = {
 
 const conversation = async (req: Request) => {
   const makeUpQuestions =
-    ' 句子里面的单词拼写对不对？这句子的语法对不对？帮我翻译成中文,再给我举出几个类似的英语句子'
+    '如果用户输入的为英文,请帮我翻译成中文,再给我举出几个类似的英语句子;如果用户输入的是中文,请帮我翻译成英文,并列举其中的语法知识。用户输入内容为: '
   let { prompt, api_key } = await req.json()
-  prompt = prompt + makeUpQuestions
+  prompt = makeUpQuestions + prompt
 
   const payload: OpenAIStreamPayload = {
     model: 'gpt-3.5-turbo',
