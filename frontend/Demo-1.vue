@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { generateImage, conversation } from './api'
-import { NSpin, useMessage } from 'naive-ui'
+import { useMessage } from 'naive-ui'
 
 const props = defineProps({
     userOpenAIKey: String
@@ -17,8 +17,8 @@ const answerLoading = ref<boolean>(false)
 const globalLoading = computed(() => {
     return imageLoading.value || answerLoading.value
 })
-const check = () => {
-    if (globalLoading.value) return
+const go = () => {
+    if (globalLoading.value || !text.value) return
     if (!props.userOpenAIKey) {
         return message.info("openai key不能为空")
     }
@@ -86,9 +86,9 @@ const analyse = () => {
         </div>
     </div>
     <div id="action">
-        <input type="text" name="" id="" v-model="text" @keydown.enter="check" placeholder="试着说句英语吧 例如: three cats">
+        <input type="text" name="" id="" v-model="text" @keydown.enter="go" placeholder="试着说句英语吧 例如: three cats">
         <n-spin :show="globalLoading" size="small">
-            <button @click="check">Check</button>
+            <button @click="go">Go</button>
         </n-spin>
     </div>
 </template>
@@ -99,7 +99,7 @@ const analyse = () => {
     width: 800px;
     height: 400px;
     position: absolute;
-    top: 100px;
+    top: 120px;
     left: 50%;
     transform: translateX(-50%);
 

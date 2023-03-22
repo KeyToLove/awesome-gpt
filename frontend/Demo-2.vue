@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue';
-import { NSpin, useMessage } from 'naive-ui'
 import { marked } from 'marked';
+import { useMessage } from 'naive-ui'
 import hljs from 'highlight.js'
 import { chatApi } from './api'
 import user_avatar from './assets/user_avatar.jpeg'

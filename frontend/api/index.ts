@@ -1,5 +1,5 @@
 export async function generateImage(prompt: string, config: any) {
-  const { userOpenAIKey, onError } = config
+  const { userOpenAIKey } = config
   const response = await fetch('/api/generateImage', {
     method: 'POST',
     headers: {
@@ -10,8 +10,17 @@ export async function generateImage(prompt: string, config: any) {
       api_key: userOpenAIKey,
     }),
   })
-  const data = await response.json()
-  return data
+  if (!response.ok) {
+    return {
+      message: response.statusText || '服务器好像开小差了，请稍后重试',
+    }
+  }
+  try {
+    const data = await response.json()
+    return data
+  } catch (error) {
+    return error
+  }
 }
 
 export async function chatApi(

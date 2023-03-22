@@ -14,7 +14,6 @@
   "author": "KeyToLove<coderEDC@163.com>",
   "license": "ISC",
   "dependencies": {
-    "@microsoft/fetch-event-source": "^2.0.1",
     "eventsource-parser": "^0.1.0",
     "highlight.js": "^11.7.0",
     "less": "^4.1.3",
