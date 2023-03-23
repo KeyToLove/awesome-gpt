@@ -69,6 +69,7 @@ const send = () => {
             // 加载完消息所有内容用 markdown渲染来高亮
             console.log('content:', content);
             chatList.value[chatList.value.length - 1].content = marked(content)
+            nextTick(moveToBottom)
         }
     })
 }
@@ -120,13 +121,13 @@ onMounted(() => {
 <style lang="less" scoped>
 h1 {
     text-align: center;
+    color: aqua;
 }
 
 .content {
-    padding: 20px;
+    padding-bottom: 80px;
     clear: both;
     height: 450px;
-    border: 2px solid orange;
     overflow-y: auto;
 
     .item {
@@ -150,7 +151,8 @@ h1 {
             float: left;
 
             .item-text {
-                border: 1px solid gray;
+                border: 1px solid rgba(0, 116, 217, 0.15);
+                background: rgba(0, 116, 217, 0.15);
             }
 
             .item-image {
@@ -175,8 +177,10 @@ h1 {
 }
 
 .action {
+    position: fixed;
+    width: 100%;
+    bottom: 40px;
     text-align: center;
-    margin-top: 20px;
 
     .n-spin-container {
         display: inline-block;

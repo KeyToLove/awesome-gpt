@@ -119,11 +119,12 @@ const onKeydown = (event: KeyboardEvent) => {
     }
 
     .left {
+        color: sandybrown;
         border: 2px solid sandybrown;
     }
 
     .right {
-        border: 2px solid skyblue;
+        border: 2px solid aqua;
         white-space: pre-line;
         overflow-y: auto;
         color: aqua;
