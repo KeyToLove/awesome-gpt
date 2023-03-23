@@ -68,17 +68,25 @@ const analyse = () => {
         }
     })
 }
+
+const onKeydown = (event: KeyboardEvent) => {
+    // event.isComposing 判断用户是否正在输入中文
+    if (event.keyCode === 13 && !event.isComposing) {
+        go()
+    }
+}
+
 </script>
 
 <template>
     <div id="container">
         <div class="left box">
-            <h2 class="text-xl">图片</h2>
+            <h2 class="text-xl">Picture</h2>
             <n-spin size="large" v-show="imageLoading" />
             <img v-if="imgSrc" :src="imgSrc" alt="pic">
         </div>
         <div class="right box" ref="answerBox">
-            <h2 class="text-xl">解析</h2>
+            <h2 class="text-xl">Translation</h2>
             <n-spin size="large" v-show="answerLoading" />
             <p class="answer">
                 {{ answer.trim() }}
@@ -86,7 +94,7 @@ const analyse = () => {
         </div>
     </div>
     <div id="action">
-        <input type="text" name="" id="" v-model="text" @keydown.enter="go" placeholder="试着说句英语吧 例如: three cats">
+        <input type="text" name="" id="" v-model="text" @keydown="onKeydown" placeholder="试着描述想要生成的图片吧 例如: three cats">
         <n-spin :show="globalLoading" size="small">
             <button @click="go">Go</button>
         </n-spin>

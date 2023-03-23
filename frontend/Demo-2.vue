@@ -82,6 +82,13 @@ const reset = () => {
     chatList.value = []
 }
 
+const onKeydown = (event: KeyboardEvent) => {
+    // event.isComposing 判断用户是否正在输入中文
+    if (event.keyCode === 13 && !event.isComposing) {
+        send()
+    }
+}
+
 
 onMounted(() => {
     reset()
@@ -101,7 +108,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="action">
-            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown.enter="send" maxlength="50">
+            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown="onKeydown" maxlength="50">
             <n-spin :show="loading" size="small">
                 <button @click="send">发送</button>
             </n-spin>
