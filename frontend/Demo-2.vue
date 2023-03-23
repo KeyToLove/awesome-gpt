@@ -16,7 +16,7 @@ marked.setOptions({
     // 高亮的语法规范
     highlight: (code, lang) => hljs.highlight(code, { language: lang }).value,
 })
-
+const OPENAI_CHAT_HISTORY = "OPENAI_CHAT_HISTORY"
 const props = defineProps({
     userOpenAIKey: String
 })
@@ -27,7 +27,8 @@ interface chatItem {
     role: 'user' | 'assistant',
     content: string
 }
-const chatList = ref<chatItem[]>([])
+const chatHistory = localStorage.getItem(OPENAI_CHAT_HISTORY) ? JSON.parse(localStorage.getItem(OPENAI_CHAT_HISTORY) as any) : []
+const chatList = ref<chatItem[]>(chatHistory)
 const contentRef = ref()
 const send = () => {
     if (!props.userOpenAIKey) {
@@ -67,9 +68,13 @@ const send = () => {
         onFinally: () => {
             loading.value = false
             // 加载完消息所有内容用 markdown渲染来高亮
-            console.log('content:', content);
             chatList.value[chatList.value.length - 1].content = marked(content)
-            nextTick(moveToBottom)
+            // 缓存对话记录到本地
+            updateChatHistory(chatList.value)
+            nextTick(() => {
+                addCopyButton()
+                moveToBottom()
+            })
         }
     })
 }
@@ -81,6 +86,12 @@ const moveToBottom = () => {
 // 重置聊天上下文
 const reset = () => {
     chatList.value = []
+    updateChatHistory([])
+}
+
+// 本地持久化存储会话
+const updateChatHistory = (history: chatItem[]) => {
+    localStorage.setItem(OPENAI_CHAT_HISTORY, JSON.stringify(history))
 }
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -90,10 +101,34 @@ const onKeydown = (event: KeyboardEvent) => {
     }
 }
 
+// 代码块添加复制按钮
+const addCopyButton = () => {
+    document.querySelectorAll('pre code').forEach((block: Element) => {
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.textContent = 'Copy';
+        block.parentNode!.insertBefore(copyButton, block);
+        // 添加复制功能
+        copyButton.addEventListener('click', () => {
+            const code = block.textContent as string
+            const el = document.createElement('textarea');
+            el.value = code;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy';
+            }, 2000);
+        });
+    });
+}
 
 onMounted(() => {
-    reset()
+    addCopyButton()
 })
+
 </script>
 <template>
     <div id="container">
@@ -172,6 +207,10 @@ h1 {
             .item-image {
                 margin-left: 15px;
             }
+        }
+
+        .copy-button {
+            float: right;
         }
     }
 }
