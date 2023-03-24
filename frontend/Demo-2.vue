@@ -104,10 +104,15 @@ const onKeydown = (event: KeyboardEvent) => {
 // 代码块添加复制按钮
 const addCopyButton = () => {
     document.querySelectorAll('pre code').forEach((block: Element) => {
+        const parentNode = block.parentElement as HTMLElement
+        // 忽略已经添加复制按钮的代码块
+        if (parentNode?.firstChild?.nodeName === "BUTTON") {
+            return
+        }
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.textContent = 'Copy';
-        block.parentNode!.insertBefore(copyButton, block);
+        parentNode.insertBefore(copyButton, block);
         // 添加复制功能
         copyButton.addEventListener('click', () => {
             const code = block.textContent as string
