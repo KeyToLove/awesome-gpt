@@ -214,8 +214,9 @@ h1 {
             }
         }
 
-        .copy-button {
+        /deep/.copy-button {
             float: right;
+            background: #5468ff;
         }
     }
 }
