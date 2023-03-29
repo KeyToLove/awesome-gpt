@@ -53,6 +53,10 @@ vercel
 
 ## 功能截图
 
+- 根据描述生成图片 & 翻译
+
 <img src="./assets/demo-1.jpg">
+
+- 智能 AI 对话
 
 <img src="./assets/demo-2.jpg">
