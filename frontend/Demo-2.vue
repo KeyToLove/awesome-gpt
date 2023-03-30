@@ -149,7 +149,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="action">
-            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown="onKeydown" maxlength="50">
+            <input type="text" v-model="text" placeholder="发送内容，开始跟AI对话吧～" @keydown="onKeydown">
             <n-spin :show="loading" size="small">
                 <button @click="send">发送</button>
             </n-spin>
