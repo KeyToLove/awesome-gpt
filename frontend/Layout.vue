@@ -3,6 +3,7 @@
 import { computed, ref } from 'vue';
 import Demo1 from './Demo-1.vue'
 import Demo2 from './Demo-2.vue'
+import Footer from './Footer.vue'
 import { useMessage } from 'naive-ui'
 
 
@@ -47,6 +48,10 @@ const expanded = computed(() => {
   return localStorage.getItem(OPENAI_KEY) ? null : ["1"]
 })
 
+const isShowFooter = computed(() => {
+  return ['/', '#/demo-1'].includes(currentPath.value)
+})
+
 </script>
 
 <template>
@@ -68,6 +73,7 @@ const expanded = computed(() => {
     <button @click="go('demo-2')" :class="{ active: activeRoute === 'demo-2' }">Demo-2</button>
   </div>
   <component :is="currentView" :userOpenAIKey="userOpenAIKey"></Component>
+  <Footer v-show="isShowFooter"></Footer>
 </template>
 <style lang="less" scoped>
 .header {
@@ -86,6 +92,7 @@ const expanded = computed(() => {
 }
 
 .nav {
+  display: flex;
   font-size: 16px;
 
   button {
