@@ -49,7 +49,7 @@ const expanded = computed(() => {
 })
 
 const isShowFooter = computed(() => {
-  return ['/', '#/demo-1'].includes(currentPath.value)
+  return ['', '/', '#/demo-1'].includes(currentPath.value)
 })
 
 </script>
