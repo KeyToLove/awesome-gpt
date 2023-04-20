@@ -167,7 +167,6 @@ h1 {
 .content {
     padding-bottom: 80px;
     clear: both;
-    height: 450px;
     overflow-y: auto;
 
     .item {
@@ -175,6 +174,7 @@ h1 {
         padding: 10px;
         clear: both;
         display: flex;
+
 
         &-image {
             width: 30px;

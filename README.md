@@ -1,15 +1,31 @@
 # AI 对话模型, 基于 openai
 
-## 功能 🌟
+## 🌟Features
+
+- [x] 中/英互译,语法分析、例句等
+- [x] 根据 prompt 生成图片
+- [x] AI 智能对话
+- [x] Markdown 显示支持
+- [x] 代码块高亮 & 一键复制
+- [x] 对话模式流失响应
+- [x] 单会话消息记录持久化存储
+- [ ] 支持多会话持久化存储
+- [ ] 内置 3 种 prompt 功能
+
+## Demo
 
 ### Demo-1
 
 - 根据输入生成符合描述的图片
 - 输入英文检查拼写是否正确，是否存在语法问题，翻译成中文并补充相关示例
 
+<img src="./assets/demo-1.jpg">
+
 ### Demo-2
 
 - 类似 chatgpt 的 AI 对话机器人 🤖️
+
+<img src="./assets/demo-2.jpg">
 
 ## 如何使用 🔧
 
@@ -50,13 +66,3 @@ vercel
 ```
 
 点击终端生成的预览链接，使用第三步生成的 `OPENAI_API_KEY` 即可体验
-
-## 功能截图
-
-- 根据描述生成图片 & 翻译
-
-<img src="./assets/demo-1.jpg">
-
-- 智能 AI 对话
-
-<img src="./assets/demo-2.jpg">
