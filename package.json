@@ -14,6 +14,7 @@
   "author": "KeyToLove<coderEDC@163.com>",
   "license": "ISC",
   "dependencies": {
+    "@vercel/analytics": "^1.0.0",
     "eventsource-parser": "^0.0.5 ",
     "highlight.js": "^11.7.0",
     "less": "^4.1.3",
