@@ -1,12 +1,11 @@
 {
-  "name": "chatgpt-demo",
+  "name": "awesome-gpt",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "vite",
-    "server": "nodemon ./server/index.js",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
