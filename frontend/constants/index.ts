@@ -12,6 +12,8 @@ export const AI_AVATAR = 'AI_AVATAR'
 
 export const USER_AVATAR = 'USER_AVATAR'
 
+export const GITHUB_REPO_ADDRESS = 'https://github.com/KeyToLove/awesome-gpt'
+
 export interface ChatItem {
   role: 'user' | 'assistant'
   content: string

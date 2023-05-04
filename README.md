@@ -36,7 +36,7 @@
 
 3. 获取 `OPENAI_API_KEY` 信息
 
-- 在 [openai](https://beta.openai.com/) 生成你的 `OPENAI_API_KEY` , 有账号的话直接生成一个即可，没有的话需要先创建账号，具体可以自行搜索如何创建 openai 账号，由于 `openai` 地区限制，该环节可能需要科学上网
+- 在 [OpenAI](https://beta.openai.com/) 生成你的 `OPENAI_API_KEY` , 有账号的话直接生成一个即可，没有的话需要先创建账号，具体可以自行搜索如何创建 OpenAI 账号，由于 `OpenAI` 地区限制，该环节可能需要科学上网
 
 `OPENAI_API_KEY` 生成方式如下图所示
 
@@ -52,7 +52,7 @@ vercel dev
 
 <img src="./assets/vercel-dev.jpg">
 
-<b style="color:pink">由于近期 openai Api 访问受限，国内用户本地访问可能会出现超时</b>
+<b style="color:pink">由于近期 OpenAI Api 访问受限，国内用户本地访问可能会出现超时</b>
 
 5. 部署 vercel 运行（推荐）
    采用 客户端请求 `vercel` -> `vercel` 云函数请求 OpenAI API -> 结果返回客户端来绕开 Api 访问受限等问题
