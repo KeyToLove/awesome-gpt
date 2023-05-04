@@ -1,6 +1,6 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   font-weight: 400;
 
@@ -41,4 +41,5 @@ button:focus-visible {
 
 #app {
   position: relative;
+  padding: 5px;
 }

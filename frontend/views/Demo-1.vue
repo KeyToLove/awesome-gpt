@@ -1,11 +1,31 @@
+<template>
+    <div id="container">
+        <div class="left box">
+            <h2 class="text-xl">Picture</h2>
+            <n-spin size="large" v-show="imageLoading" />
+            <img v-if="imgSrc" :src="imgSrc" alt="pic">
+        </div>
+        <div class="right box" ref="answerBox">
+            <h2 class="text-xl">Translation</h2>
+            <n-spin size="large" v-show="answerLoading" />
+            <p class="answer">
+                {{ answer.trim() }}
+            </p>
+        </div>
+    </div>
+    <div id="action">
+        <input type="text" name="" id="" v-model="text" @keydown="onKeydown" placeholder="试着描述想要生成的图片吧 例如: three cats">
+        <n-spin :show="globalLoading" size="small">
+            <button @click="go">Go</button>
+        </n-spin>
+    </div>
+</template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { generateImage, conversation } from './api'
+import { generateImage, conversation } from '../api'
 import { useMessage } from 'naive-ui'
-
-const props = defineProps({
-    userOpenAIKey: String
-})
+import { OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS } from '../constants'
+const userOpenAIKey = localStorage.getItem(OPENAI_KEY)
 
 const message = useMessage()
 const imgSrc = ref<string>("")
@@ -19,8 +39,8 @@ const globalLoading = computed(() => {
 })
 const go = () => {
     if (globalLoading.value || !text.value) return
-    if (!props.userOpenAIKey) {
-        return message.info("openai key不能为空")
+    if (!userOpenAIKey) {
+        return message.info(WITHOUT_OPENAI_KEY_TIPS)
     }
     reset()
     getImage()
@@ -35,7 +55,7 @@ const reset = () => {
 const getImage = async () => {
     imageLoading.value = true
     const data = await generateImage(text.value, {
-        userOpenAIKey: props.userOpenAIKey,
+        userOpenAIKey,
     })
     if (!data?.data) {
         imageLoading.value = false
@@ -49,7 +69,7 @@ const getImage = async () => {
 const analyse = () => {
     answerLoading.value = true
     conversation(text.value, {
-        userOpenAIKey: props.userOpenAIKey,
+        userOpenAIKey,
         onMessage: (str: string) => {
             if (answerLoading.value) {
                 answerLoading.value = false
@@ -77,30 +97,6 @@ const onKeydown = (event: KeyboardEvent) => {
 }
 
 </script>
-
-<template>
-    <div id="container">
-        <div class="left box">
-            <h2 class="text-xl">Picture</h2>
-            <n-spin size="large" v-show="imageLoading" />
-            <img v-if="imgSrc" :src="imgSrc" alt="pic">
-        </div>
-        <div class="right box" ref="answerBox">
-            <h2 class="text-xl">Translation</h2>
-            <n-spin size="large" v-show="answerLoading" />
-            <p class="answer">
-                {{ answer.trim() }}
-            </p>
-        </div>
-    </div>
-    <div id="action">
-        <input type="text" name="" id="" v-model="text" @keydown="onKeydown" placeholder="试着描述想要生成的图片吧 例如: three cats">
-        <n-spin :show="globalLoading" size="small">
-            <button @click="go">Go</button>
-        </n-spin>
-    </div>
-</template>
-
 <style scoped lang="less">
 #container {
     display: flex;

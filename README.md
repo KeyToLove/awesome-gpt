@@ -1,4 +1,4 @@
-# AI 对话模型, 基于 openai
+# Awesome-gpt, 基于 OpenAI 定制化的 “Chatgpt” Web 应用
 
 ## 🌟Features
 
@@ -16,7 +16,7 @@
 
 ### Demo-1
 
-- 根据输入生成符合描述的图片
+- 根据 prompt 生成符合描述的图片
 - 输入英文检查拼写是否正确，是否存在语法问题，翻译成中文并补充相关示例
 
 <img src="./assets/demo-1.jpg">
@@ -42,8 +42,6 @@
 
 <img src="./assets/guide.jpg">
 
-这个 `OPENAI_API_KEY` 将在本地和部署时使用
-
 4. 本地运行
 
 ```bash
@@ -54,10 +52,10 @@ vercel dev
 
 <img src="./assets/vercel-dev.jpg">
 
-<b style="color:pink">由于近期 openai Api 访问受限，本地访问可能会出现超时</b>
+<b style="color:pink">由于近期 openai Api 访问受限，国内用户本地访问可能会出现超时</b>
 
 5. 部署 vercel 运行（推荐）
-   采用 客户端请求 `vercel` -> `vercel` 云函数请求 open ai -> 结果返回客户端来绕开 api 访问受限问题
+   采用 客户端请求 `vercel` -> `vercel` 云函数请求 OpenAI API -> 结果返回客户端来绕开 Api 访问受限等问题
 
 终端运行,等待`vercel` build 完成即可预览或者发布
 
