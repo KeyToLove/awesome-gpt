@@ -19,6 +19,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/demo-3',
+    name: 'Demo-3',
+    component: () => import('../views/Demo-2.vue'),
+    meta: {
+      desc: 'Role Play',
+    },
+  },
+  {
     path: '/config',
     name: 'Config',
     component: () => import('../views/Config.vue'),

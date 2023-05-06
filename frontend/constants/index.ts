@@ -14,7 +14,16 @@ export const USER_AVATAR = 'USER_AVATAR'
 
 export const GITHUB_REPO_ADDRESS = 'https://github.com/KeyToLove/awesome-gpt'
 
-export interface ChatItem {
+export const HISTORY_MAX_SIZE = 30
+
+export type chatItemDetail = {
   role: 'user' | 'assistant'
   content: string
+}
+
+export interface ChatItem {
+  uid: number
+  createTime?: number
+  updateTime?: number
+  detail: chatItemDetail[]
 }

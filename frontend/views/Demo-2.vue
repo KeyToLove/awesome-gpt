@@ -1,14 +1,29 @@
 <template>
   <div id="container">
-    <h1>AI - Chat</h1>
-    <div class="content" ref="contentRef">
-      <div v-for="(item, index) in chatList" :class="['item', item.role === 'assistant' ? 'item-ai' : 'item-user']"
-        :key="index">
-        <img class="item-image" :src="item.role === 'user' ? user_avatar : ai_avatar" alt="" />
-        <div class="item-text" v-if="item.role === 'user'">
-          {{ item.content }}
+    <h1>AI Conversation</h1>
+    <div class="flex">
+      <ul class="history">
+        <n-tooltip placement="right" trigger="hover" v-for="item in  reverseChatHistory" :key="item.uid"
+          :style="{ maxWidth: '400px' }">
+          <template #trigger>
+            <li @click="handleClickHistoryItem(item)" :class="activeChatItemUid === item.uid ? 'active' : ''">
+              {{ item.detail?.[0]?.content ?? '新话题' }}
+              <img v-if="activeChatItemUid === item.uid" @click.stop="handleDeleteHistoryItem(item)" :src="deleteIcon"
+                title="删除回话" />
+            </li>
+          </template>
+          <span class="history-tooltip"> {{ item.detail?.[0]?.content ?? '新话题' }} </span>
+        </n-tooltip>
+      </ul>
+      <div class="content" ref="contentRef">
+        <div v-for="( item, index ) in  activeChatItem.detail "
+          :class="['item', item.role === 'assistant' ? 'item-ai' : 'item-user']" :key="index">
+          <img class="item-image" :src="item.role === 'user' ? user_avatar : ai_avatar" alt="" />
+          <div class="item-text" v-if="item.role === 'user'">
+            {{ item.content }}
+          </div>
+          <div class="item-text" v-else v-html="item.content"></div>
         </div>
-        <div class="item-text" v-else v-html="item.content"></div>
       </div>
     </div>
     <div class="action">
@@ -16,24 +31,29 @@
       <n-spin :show="loading" size="small">
         <button @click="send">发送</button>
       </n-spin>
-      <button @click="reset">重置话题</button>
+      <button @click="newChat">新话题</button>
+      <button @click="generateImage">下载对话图片</button>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { marked } from "marked";
 import { useMessage } from "naive-ui";
 import hljs from "highlight.js";
+import html2canvas from "html2canvas"
 import { chatApi } from "../api";
+import { generateUid, isIncludeCodeBlock } from '../util/index'
 import { USER_AVATAR, AI_AVATAR } from "../constants";
 import default_user_avatar from "../assets/user_avatar.jpeg";
 import default_ai_avatar from "../assets/ai_avatar.webp";
+import deleteIcon from '../assets/delete.svg'
 import {
   OPENAI_KEY,
   OPENAI_CHAT_HISTORY,
   ChatItem,
   WITHOUT_OPENAI_KEY_TIPS,
+  HISTORY_MAX_SIZE
 } from "../constants";
 const user_avatar = localStorage.getItem(USER_AVATAR) ?? default_user_avatar;
 const ai_avatar = localStorage.getItem(AI_AVATAR) ?? default_ai_avatar;
@@ -43,27 +63,42 @@ marked.setOptions({
   gfm: true, // 启动类似于Github样式的Markdown语法
   pedantic: false, // 只解析符合Markdwon定义的，不修正Markdown的错误
   sanitize: false, // 原始输出，忽略HTML标签（关闭后，可直接渲染HTML标签）
-
   // 高亮的语法规范
-  highlight: (code, lang) => hljs.highlight(code, { language: lang }).value,
+  // TODO: OpenAI 代码块有时候不会正确返回语言格式，会导致highlight解析出错，如果未正确返回格式现默认当javascript进行解析
+  highlight: (code, lang) => hljs.highlight(code, { language: lang || 'javascript' }).value,
 });
 const userOpenAIKey = localStorage.getItem(OPENAI_KEY);
 const message = useMessage();
 const text = ref<string>("");
 const loading = ref<boolean>(false);
 
-const chatHistory = localStorage.getItem(OPENAI_CHAT_HISTORY)
+// 从localStorage读取全部对话历史
+const initChatHistory = localStorage.getItem(OPENAI_CHAT_HISTORY)
   ? JSON.parse(localStorage.getItem(OPENAI_CHAT_HISTORY) as any)
-  : [];
-const chatList = ref<ChatItem[]>(chatHistory);
+  : []
+const chatHistory = ref<ChatItem[]>(initChatHistory)
+
+// 默认从对话历史记录中取最后一条作为当前回话
+const initChatItem = chatHistory.value[chatHistory.value.length - 1] ?? {
+  uid: generateUid(),
+  createTime: Date.now(),
+  detail: []
+}
+
+// 当前会话
+const activeChatItem = ref<ChatItem>(initChatItem)
+// 当前会话对应uid
+const activeChatItemUid = ref<number>(activeChatItem.value.uid)
+
 const contentRef = ref();
+
 const send = () => {
   if (!userOpenAIKey) {
     return message.info(WITHOUT_OPENAI_KEY_TIPS);
   }
   if (loading.value || !text.value.trim()) return;
   loading.value = true;
-  chatList.value.push({
+  activeChatItem.value.detail.push({
     role: "user",
     content: text.value,
   });
@@ -71,18 +106,18 @@ const send = () => {
   text.value = "";
   // 记录AI回复内容
   let content = "";
-  chatApi(chatList.value, {
+  chatApi(activeChatItem.value.detail, {
     userOpenAIKey,
     onMessage: (msg: string) => {
       if (msg) {
         const newContent = content + msg;
         if (!content) {
-          chatList.value.push({
+          activeChatItem.value.detail.push({
             role: "assistant",
             content: msg,
           });
         } else {
-          chatList.value[chatList.value.length - 1].content = newContent;
+          activeChatItem.value.detail[activeChatItem.value.detail.length - 1].content = newContent;
         }
         content = newContent;
         moveToBottom();
@@ -94,10 +129,13 @@ const send = () => {
     },
     onFinally: () => {
       loading.value = false;
-      // 加载完消息所有内容用 markdown渲染来高亮
-      chatList.value[chatList.value.length - 1].content = marked(content);
+      activeChatItem.value.updateTime = Date.now()
+      // 加载完消息所有内容,如果包含代码块用markdown渲染来高亮
+      if (isIncludeCodeBlock(content)) {
+        activeChatItem.value.detail[activeChatItem.value.detail.length - 1].content = marked(content);
+      }
       // 缓存对话记录到本地
-      updateChatHistory(chatList.value);
+      updateChatHistory(activeChatItem.value);
       nextTick(() => {
         addCopyButton();
         moveToBottom();
@@ -106,19 +144,51 @@ const send = () => {
   });
 };
 
+// 生成图片
+const generateImage = () => {
+  // html2canvas 默认只会生成可视区范围的canvas，需要根据元素设置正确窗口尺寸
+  const el = document.querySelector('#container .content') as HTMLElement
+  html2canvas(el, {
+    backgroundColor: "#242424",
+    allowTaint: true,
+    windowWidth: el.clientWidth,
+    windowHeight: el.scrollHeight + 50
+  }).then(canvas => {
+    var link = document.createElement("a");
+    document.body.appendChild(link);
+    link.download = `会话 - ${Date.now()}.png`;
+    link.href = canvas.toDataURL();
+    link.target = '_blank';
+    link.click();
+    document.body.removeChild(link)
+  })
+}
+
 // 聊天记录触底
 const moveToBottom = () => {
   contentRef.value.scrollTop = contentRef.value.scrollHeight;
 };
-// 重置聊天上下文
-const reset = () => {
-  chatList.value = [];
-  updateChatHistory([]);
+// 新话题
+const newChat = () => {
+  activeChatItem.value = {
+    uid: generateUid(),
+    createTime: Date.now(),
+    detail: []
+  }
 };
 
 // 本地持久化存储会话
-const updateChatHistory = (history: ChatItem[]) => {
-  localStorage.setItem(OPENAI_CHAT_HISTORY, JSON.stringify(history));
+const updateChatHistory = (chatItem: ChatItem) => {
+  const index = chatHistory.value.findIndex(chat => chat.uid === chatItem.uid)
+  if (index > -1) {
+    chatHistory.value.splice(index, 1)
+  }
+  // 如果已经达到存储上限则先移除最久远的回话记录 
+  if (chatHistory.value.length === HISTORY_MAX_SIZE) {
+    chatHistory.value.shift()
+  }
+  chatHistory.value.push(chatItem)
+  localStorage.setItem(OPENAI_CHAT_HISTORY, JSON.stringify(chatHistory.value));
 };
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -157,6 +227,28 @@ const addCopyButton = () => {
   });
 };
 
+// 点击对应回话记录
+const handleClickHistoryItem = (item: ChatItem) => {
+  activeChatItem.value = item
+  nextTick(addCopyButton)
+}
+
+// 删除对应回话记录
+const handleDeleteHistoryItem = (item: ChatItem) => {
+  const index = chatHistory.value.findIndex(chat => chat.uid === item.uid)
+  chatHistory.value.splice(index, 1)
+  localStorage.setItem(OPENAI_CHAT_HISTORY, JSON.stringify(chatHistory.value))
+  newChat()
+}
+
+const reverseChatHistory = computed(() => {
+  return chatHistory.value.reverse()
+})
+
+watch(activeChatItem, (newValue, oldValue) => {
+  activeChatItemUid.value = newValue.uid
+})
+
 onMounted(() => {
   addCopyButton();
 });
@@ -169,7 +261,60 @@ h1 {
   color: aqua;
 }
 
+.flex {
+  display: flex;
+  height: calc(100vh - 220px);
+}
+
+
+.history {
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  height: 100%;
+  border: 2px solid #fff;
+  background: #1a1a1a;
+  font-size: 16px;
+
+  li {
+    position: relative;
+    list-style: none;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 6px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:hover {
+      background-color: rgba(42, 43, 50, 1);
+    }
+
+    &.active {
+      background-color: rgba(52, 53, 65, 1);
+      // 给删除图标预留位置
+      padding-right: 25px;
+      color: aqua;
+    }
+
+    img {
+      position: absolute;
+      display: inline-block;
+      right: 6px;
+      top: 12px;
+      height: 16px;
+    }
+  }
+}
+
 .content {
+  flex: 1;
+  height: 100%;
   padding-bottom: 80px;
   clear: both;
   overflow-y: auto;
@@ -226,7 +371,8 @@ h1 {
 
 .action {
   position: fixed;
-  width: 100%;
+  width: calc(100% - 250px);
+  left: 263px; // 250 + body padding(8) + App margin(5)
   bottom: 40px;
   text-align: center;
 
