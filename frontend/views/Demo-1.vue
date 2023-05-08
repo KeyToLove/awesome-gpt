@@ -1,4 +1,5 @@
 <template>
+  <h1>{{ route.meta.desc }}</h1>
   <div id="container">
     <div class="left box">
       <h2 class="text-xl">Picture</h2>
@@ -25,7 +26,10 @@ import { computed, ref } from "vue";
 import { generateImage, conversation } from "../api";
 import { useMessage } from "naive-ui";
 import { OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS } from "../constants";
+import { useRoute } from "vue-router";
 const userOpenAIKey = localStorage.getItem(OPENAI_KEY);
+
+const route = useRoute()
 
 const message = useMessage();
 const imgSrc = ref<string>("");
@@ -68,7 +72,7 @@ const getImage = async () => {
 
 const analyse = () => {
   answerLoading.value = true;
-  conversation(text.value, {
+  conversation({ key:'translate',prompts:text.value }, {
     userOpenAIKey,
     onMessage: (str: string) => {
       if (answerLoading.value) {
@@ -97,6 +101,11 @@ const onKeydown = (event: KeyboardEvent) => {
 };
 </script>
 <style scoped lang="less">
+h1 {
+  text-align: center;
+  color: aqua;
+}
+
 #container {
   display: flex;
   width: 800px;

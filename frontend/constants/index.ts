@@ -16,6 +16,42 @@ export const GITHUB_REPO_ADDRESS = 'https://github.com/KeyToLove/awesome-gpt'
 
 export const HISTORY_MAX_SIZE = 30
 
+export const PROMPT_MAP = [
+  {
+    title: '生成周报',
+    key: 'weeklyNewspaper',
+    description: '根据日常工作内容，提取要点并适当扩充，以生成周报。',
+    markdown: true,
+  },
+  {
+    title: '小红书风格',
+    key: 'littleRedBook',
+    description: '将文本改写成类似小红书的 Emoji 风格。',
+    markdown: false,
+  },
+  {
+    title: '写作助手',
+    key: 'writingHelper',
+    description: '用于优化文本的语法、清晰度和简洁度，提高可读性',
+    markdown: false,
+  },
+  {
+    title: '健身教练',
+    key: 'fitnessAdvice',
+    description: '通过输入身高、体重、年龄等指标，来制定健身方案。',
+    markdown: false,
+  },
+]
+
+export const PROMPT_COLOR_MAP = [
+  '#75581e',
+  '#dfd545',
+  '#8c2f00',
+  '#ff6100',
+  '#cf92e0',
+  '#127f82',
+]
+
 export type chatItemDetail = {
   role: 'user' | 'assistant'
   content: string
@@ -26,4 +62,16 @@ export interface ChatItem {
   createTime?: number
   updateTime?: number
   detail: chatItemDetail[]
+}
+
+export type promptMapItem = {
+  title: string
+  key: string
+  description: string
+  markdown: boolean
+}
+
+export type promptInfoType = {
+  key: string
+  prompts: string | string[]
 }

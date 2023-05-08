@@ -5,7 +5,7 @@ export const config = {
 export default async function generateImage(req: Request) {
   let { prompt, api_key } = await req.json()
 
-  const OPENAI_API_KEY = api_key || process.env.OPENAI_API_KEY || ''
+  const OPENAI_API_KEY = api_key
   const response = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
     headers: {

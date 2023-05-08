@@ -1,14 +1,15 @@
 import OpenAIStream, { OpenAIStreamPayload } from '../utils/openAIStreams'
+import generatePrompt from '../utils/generatePrompt'
 export const config = {
   runtime: 'edge',
 }
 
 const conversation = async (req: Request) => {
-  const makeUpQuestions =
-    '接下来你将扮演我的翻译官，若我输入英文,请帮我翻译成中文,再给我举出几个类似的英语句子;若我输入的是中文,请帮我翻译成英文,并列举其中的语法知识。我的输入: '
-  let { prompt, api_key } = await req.json()
-  prompt = makeUpQuestions + prompt
+  let { promptInfo, api_key } = await req.json()
 
+  const { key, prompts } = promptInfo
+
+  const prompt = generatePrompt(key, prompts)
   const payload: OpenAIStreamPayload = {
     model: 'gpt-3.5-turbo',
     messages: [{ role: 'user', content: prompt }],

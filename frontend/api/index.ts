@@ -1,3 +1,5 @@
+import { type promptInfoType } from '../constants'
+
 export async function generateImage(prompt: string, config: any) {
   const { userOpenAIKey } = config
   const response = await fetch('/api/generateImage', {
@@ -62,7 +64,7 @@ export async function chatApi(
   onFinally()
 }
 
-export async function conversation(prompt: string, config: any) {
+export async function conversation(promptInfo: promptInfoType, config: any) {
   const { onError, onFinally, onMessage, userOpenAIKey } = config
   const response = await fetch('/api/conversation', {
     method: 'POST',
@@ -70,7 +72,7 @@ export async function conversation(prompt: string, config: any) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      prompt,
+      promptInfo,
       api_key: userOpenAIKey,
     }),
   })

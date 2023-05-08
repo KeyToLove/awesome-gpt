@@ -21,9 +21,9 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/demo-3',
     name: 'Demo-3',
-    component: () => import('../views/Demo-2.vue'),
+    component: () => import('../views/Demo-3.vue'),
     meta: {
-      desc: 'Role Play',
+      desc: 'Preset Prompt',
     },
   },
   {

@@ -4,6 +4,9 @@ dependencies:
   '@vercel/analytics':
     specifier: ^1.0.0
     version: 1.0.0(react@18.2.0)
+  '@vercel/edge-config':
+    specifier: ^0.1.9
+    version: 0.1.9
   eventsource-parser:
     specifier: '^0.0.5 '
     version: 0.0.5
@@ -426,6 +429,11 @@ packages:
   /@vercel/build-utils@6.4.0:
     resolution: {integrity: sha512-kQEvyQOEjpfAwiX8cxuGmetffb3zkydrqQB1hJd4BihCz4Bt2f5YJvxEagzrehbGn5pCd4NRIKIi9cUL6vZRTA==}
     dev: true
+
+  /@vercel/edge-config@0.1.9:
+    resolution: {integrity: sha512-tw52z4AqBgDNxm+sfLtTHOTTwuEKKaiPnklY+RRnMRSLuHTTIfv5yCLtmu3cjYDmZmMK5EZGxgO1mFGL5WdcNQ==}
+    engines: {node: '>=14.6'}
+    dev: false
 
   /@vercel/node-bridge@3.1.14:
     resolution: {integrity: sha512-TAbo0rwBenmWywcEup+5lZgr6ILPPq55P33JRX+oJJuTxYib0NqVj47gEvLTxaj3MoJFgp0iDlC9A0uAf4ykxQ==}

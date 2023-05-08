@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <h1>AI Conversation</h1>
+    <h1>{{ route.meta.desc }}</h1>
     <div class="flex">
       <ul class="history">
         <n-tooltip placement="right" trigger="hover" v-for="item in  reverseChatHistory" :key="item.uid"
@@ -55,6 +55,8 @@ import {
   WITHOUT_OPENAI_KEY_TIPS,
   HISTORY_MAX_SIZE
 } from "../constants";
+import { useRoute } from "vue-router";
+const route = useRoute()
 const user_avatar = localStorage.getItem(USER_AVATAR) ?? default_user_avatar;
 const ai_avatar = localStorage.getItem(AI_AVATAR) ?? default_ai_avatar;
 const render = new marked.Renderer();
