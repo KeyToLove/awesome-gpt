@@ -150,6 +150,8 @@ const send = () => {
 const generateImage = () => {
   // html2canvas 默认只会生成可视区范围的canvas，需要根据元素设置正确窗口尺寸
   const el = document.querySelector('#container .content') as HTMLElement
+  //TODO: 如果可视区发生滚动可能存在截图不全情况，先滚动可视区到顶部 待优化
+  el.scrollTop = 0
   html2canvas(el, {
     backgroundColor: "#242424",
     allowTaint: true,
