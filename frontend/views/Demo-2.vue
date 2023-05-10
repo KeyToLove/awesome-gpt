@@ -22,7 +22,8 @@
           <div class="item-text" v-if="item.role === 'user'">
             {{ item.content }}
           </div>
-          <div class="item-text" v-else v-html="item.content"></div>
+          <div :class="['item-text', loading ? 'loading' : '']" v-else v-html="item.content">
+          </div>
         </div>
       </div>
     </div>
@@ -48,6 +49,7 @@ import { USER_AVATAR, AI_AVATAR } from "../constants";
 import default_user_avatar from "../assets/user_avatar.jpeg";
 import default_ai_avatar from "../assets/ai_avatar.webp";
 import deleteIcon from '../assets/delete.svg'
+import cursor from '../assets/cursor.gif'
 import {
   OPENAI_KEY,
   OPENAI_CHAT_HISTORY,
@@ -346,6 +348,16 @@ h1 {
       .item-text {
         border: 1px solid rgba(0, 116, 217, 0.15);
         background: rgba(0, 116, 217, 0.15);
+
+        &.loading::after {
+          content: '';
+          display: inline-block;
+          width: 3px;
+          height: 16px;
+          position: relative;
+          top: 2px;
+          background: url('../assets/cursor.gif');
+        }
       }
 
       .item-image {

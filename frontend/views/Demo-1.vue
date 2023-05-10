@@ -9,7 +9,7 @@
     <div class="right box" ref="answerBox">
       <h2 class="text-xl">Translation</h2>
       <n-spin size="large" v-show="answerLoading" />
-      <p class="answer">
+      <p :class="['answer', globalLoading ? 'loading' : '']">
         {{ answer.trim() }}
       </p>
     </div>
@@ -38,8 +38,9 @@ const answer = ref<string>("");
 const answerBox = ref<HTMLElement>();
 const imageLoading = ref<boolean>(false);
 const answerLoading = ref<boolean>(false);
+const answerComplateLoading = ref<boolean>(false);
 const globalLoading = computed(() => {
-  return imageLoading.value || answerLoading.value;
+  return imageLoading.value || answerComplateLoading.value;
 });
 const go = () => {
   if (globalLoading.value || !text.value) return;
@@ -72,7 +73,8 @@ const getImage = async () => {
 
 const analyse = () => {
   answerLoading.value = true;
-  conversation({ key:'translate',prompts:text.value }, {
+  answerComplateLoading.value = true
+  conversation({ key: 'translate', prompts: text.value }, {
     userOpenAIKey,
     onMessage: (str: string) => {
       if (answerLoading.value) {
@@ -84,11 +86,14 @@ const analyse = () => {
       }
     },
     onError: (msg: string) => {
-      console.log("error message:", msg);
+      console.error(`Analyse error, message:${msg}`);
       message.error(msg || "服务异常");
+      answerLoading.value = false;
+      answerComplateLoading.value = false
     },
     onFinally: () => {
       answerLoading.value = false;
+      answerComplateLoading.value = false
     },
   });
 };
@@ -136,6 +141,16 @@ h1 {
 
     .answer {
       padding: 6px;
+
+      &.loading::after {
+        content: '';
+        display: inline-block;
+        width: 3px;
+        height: 16px;
+        position: relative;
+        top: 2px;
+        background: url('../assets/cursor.gif');
+      }
     }
   }
 }

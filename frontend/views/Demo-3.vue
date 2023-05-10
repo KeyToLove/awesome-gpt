@@ -22,7 +22,7 @@
         <div class="right box" ref="answerBox">
             <h2 class="text-xl">Output</h2>
             <n-spin size="large" v-show="answerLoading" />
-            <p class="answer" v-html="answer">
+            <p :class="['answer', globalLoading ? 'loading' : '']" v-html="answer">
             </p>
         </div>
     </div>
@@ -210,6 +210,16 @@ h1 {
 
         .answer {
             padding: 6px;
+
+            &.loading::after {
+                content: '';
+                display: inline-block;
+                width: 3px;
+                height: 16px;
+                position: relative;
+                top: 2px;
+                background: url('../assets/cursor.gif');
+            }
         }
     }
 }
