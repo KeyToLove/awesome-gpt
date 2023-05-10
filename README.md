@@ -11,7 +11,7 @@
 - [x] 支持多会话持久化存储
 - [x] 支持会话生成图片并下载
 - [x] 内置 N 种 prompt 功能
-- [] AND MORE..
+- [ ] AND MORE..
 
 ## Demo
 
