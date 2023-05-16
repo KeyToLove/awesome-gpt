@@ -7,6 +7,9 @@ dependencies:
   '@vercel/edge-config':
     specifier: ^0.1.9
     version: 0.1.9
+  canvas-confetti:
+    specifier: ^1.6.0
+    version: 1.6.0
   eventsource-parser:
     specifier: '^0.0.5 '
     version: 0.0.5
@@ -650,6 +653,10 @@ packages:
     dependencies:
       fill-range: 7.0.1
     dev: true
+
+  /canvas-confetti@1.6.0:
+    resolution: {integrity: sha512-ej+w/m8Jzpv9Z7W7uJZer14Ke8P2ogsjg4ZMGIuq4iqUOqY2Jq8BNW42iGmNfRwREaaEfFIczLuZZiEVSYNHAA==}
+    dev: false
 
   /code-block-writer@10.1.1:
     resolution: {integrity: sha512-67ueh2IRGst/51p0n6FvPrnRjAGHY5F8xdjkgrYE7DDzpJe6qA07RYQ9VcoUeo5ATOjSOiWpSL3SWBRRbempMw==}

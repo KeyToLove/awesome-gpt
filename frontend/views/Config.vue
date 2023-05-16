@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useMessage, UploadFileInfo } from "naive-ui";
 import {
   OPENAI_KEY,
@@ -30,6 +30,7 @@ import {
   AI_AVATAR,
   USER_AVATAR,
 } from "../constants";
+import { fireworks } from '../util/confetti'
 
 const message = useMessage();
 
@@ -42,6 +43,7 @@ const updateKey = () => {
   if (!openaiKey.value) return;
   window.localStorage.setItem(OPENAI_KEY, openaiKey.value);
   openaiKey.value = "";
+  fireworks()
   message.success(UPDATE_OPENAI_KEY_TIPS);
 };
 const userPreviewFileList = ref<UploadFileInfo[]>([]);
@@ -60,6 +62,7 @@ const onChange = async (type: number, options: any, e: InputEvent) => {
       ? (currentUserAvatar.value = result)
       : (currentAIAvatar.value = result);
     localStorage.setItem(type === 1 ? USER_AVATAR : AI_AVATAR, result);
+    fireworks()
   } catch (error: any) {
     message.error("图片上传失败: " + error.message);
   }

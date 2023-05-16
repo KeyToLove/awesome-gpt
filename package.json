@@ -15,6 +15,7 @@
   "dependencies": {
     "@vercel/analytics": "^1.0.0",
     "@vercel/edge-config": "^0.1.9",
+    "canvas-confetti": "^1.6.0",
     "eventsource-parser": "^0.0.5 ",
     "highlight.js": "^11.7.0",
     "html2canvas": "^1.4.1",
