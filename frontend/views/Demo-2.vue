@@ -9,7 +9,7 @@
             <li @click="handleClickHistoryItem(item)" :class="activeChatItemUid === item.uid ? 'active' : ''">
               {{ item.detail?.[0]?.content ?? '新话题' }}
               <img v-if="activeChatItemUid === item.uid" @click.stop="handleDeleteHistoryItem(item)" :src="deleteIcon"
-                title="删除回话" />
+                title="删除会话" />
             </li>
           </template>
           <span class="history-tooltip"> {{ item.detail?.[0]?.content ?? '新话题' }} </span>
