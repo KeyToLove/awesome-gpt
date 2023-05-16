@@ -22,7 +22,8 @@
           <div class="item-text" v-if="item.role === 'user'">
             {{ item.content }}
           </div>
-          <div :class="['item-text', loading ? 'loading' : '']" v-else v-html="item.content">
+          <div :class="['item-text', { loading: loading && (index === activeChatItem.detail.length - 1) }]" v-else
+            v-html="item.content">
           </div>
         </div>
       </div>
