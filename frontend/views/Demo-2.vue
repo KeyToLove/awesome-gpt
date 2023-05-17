@@ -50,7 +50,6 @@ import { USER_AVATAR, AI_AVATAR } from "../constants";
 import default_user_avatar from "../assets/user_avatar.jpeg";
 import default_ai_avatar from "../assets/ai_avatar.webp";
 import deleteIcon from '../assets/delete.svg'
-import cursor from '../assets/cursor.gif'
 import {
   OPENAI_KEY,
   OPENAI_CHAT_HISTORY,
@@ -249,7 +248,9 @@ const handleDeleteHistoryItem = (item: ChatItem) => {
 }
 
 const reverseChatHistory = computed(() => {
-  return chatHistory.value.reverse()
+  // reverse 会改变原始数组 copy一份再进行反转
+  const copy = chatHistory.value.slice(0)
+  return copy.reverse()
 })
 
 watch(activeChatItem, (newValue, oldValue) => {
