@@ -22,7 +22,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, nextTick } from "vue";
 import { generateImage, conversation } from "../api";
 import { useMessage } from "naive-ui";
 import { OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS } from "../constants";
@@ -71,6 +71,12 @@ const getImage = async () => {
   imageLoading.value = false;
 };
 
+const moveToBottom = () => {
+  if (answerBox.value) {
+    answerBox.value.scrollTop = answerBox.value.scrollHeight;
+  }
+}
+
 const analyse = () => {
   answerLoading.value = true;
   answerComplateLoading.value = true
@@ -81,9 +87,7 @@ const analyse = () => {
         answerLoading.value = false;
       }
       answer.value += str;
-      if (answerBox.value) {
-        answerBox.value.scrollTop = answerBox.value.scrollHeight;
-      }
+      moveToBottom()
     },
     onError: (msg: string) => {
       console.error(`Analyse error, message:${msg}`);
@@ -94,6 +98,7 @@ const analyse = () => {
     onFinally: () => {
       answerLoading.value = false;
       answerComplateLoading.value = false
+      nextTick(moveToBottom)
     },
   });
 };

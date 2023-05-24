@@ -114,13 +114,16 @@ const send = () => {
     userOpenAIKey,
     onMessage: (msg: string) => {
       if (msg) {
-        const newContent = content + msg;
+        let newContent = content + msg;
         if (!content) {
           activeChatItem.value.detail.push({
             role: "assistant",
             content: msg,
           });
         } else {
+          if (isIncludeCodeBlock(newContent)) {
+            newContent = marked(newContent)
+          }
           activeChatItem.value.detail[activeChatItem.value.detail.length - 1].content = newContent;
         }
         content = newContent;
@@ -135,9 +138,9 @@ const send = () => {
       loading.value = false;
       activeChatItem.value.updateTime = Date.now()
       // 加载完消息所有内容,如果包含代码块用markdown渲染来高亮
-      if (isIncludeCodeBlock(content)) {
-        activeChatItem.value.detail[activeChatItem.value.detail.length - 1].content = marked(content);
-      }
+      // if (isIncludeCodeBlock(content)) {
+      //   activeChatItem.value.detail[activeChatItem.value.detail.length - 1].content = marked(content);
+      // }
       // 缓存对话记录到本地
       updateChatHistory(activeChatItem.value);
       nextTick(() => {

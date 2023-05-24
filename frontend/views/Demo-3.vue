@@ -38,7 +38,7 @@
 import { useRoute } from 'vue-router';
 import { PROMPT_MAP, PROMPT_COLOR_MAP, OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS, type promptMapItem } from '../constants'
 import { useMessage } from 'naive-ui'
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { conversation } from '../api'
 import { marked } from "marked";
 import hljs from "highlight.js";
@@ -49,7 +49,7 @@ marked.setOptions({
     pedantic: false, // 只解析符合Markdwon定义的，不修正Markdown的错误
     sanitize: false, // 原始输出，忽略HTML标签（关闭后，可直接渲染HTML标签）
     // 高亮的语法规范
-    highlight: (code, lang) => hljs.highlight(code, { language: lang }).value,
+    highlight: (code, lang) => hljs.highlight(code, { language: lang || 'javascript' }).value,
 });
 
 const message = useMessage()
@@ -77,6 +77,13 @@ const getBallBG = (index: number) => {
     return PROMPT_COLOR_MAP[index % PROMPT_COLOR_MAP.length]
 }
 
+// 聊天记录触底
+const moveToBottom = () => {
+    if (answerBox.value) {
+        answerBox.value.scrollTop = answerBox.value.scrollHeight;
+    }
+};
+
 const go = () => {
     if (globalLoading.value || !prompt.value?.trim()) return
     if (!userOpenAIKey) {
@@ -95,9 +102,7 @@ const go = () => {
                 answerLoading.value = false;
             }
             answer.value += str;
-            if (answerBox.value) {
-                answerBox.value.scrollTop = answerBox.value.scrollHeight;
-            }
+            moveToBottom()
         },
         onError: (msg: string) => {
             console.log("error message:", msg);
@@ -108,6 +113,10 @@ const go = () => {
             if (needMarkdown) {
                 answer.value = marked(answer.value)
             }
+            nextTick(() => {
+                addCopyButton();
+                moveToBottom()
+            });
             answerLoading.value = false;
             globalLoading.value = false
         },
@@ -121,10 +130,15 @@ const onKeydown = (event: KeyboardEvent) => {
     }
 };
 
+onMounted(() => {
+    addCopyButton();
+});
+
 const copy = () => {
     const copyButton = document.getElementById('copy-btn') as HTMLElement
     const el = document.createElement("textarea");
-    el.value = answer.value;
+    const textContent = document.querySelector('.answer')?.textContent ?? ''
+    el.value = textContent
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
@@ -135,6 +149,35 @@ const copy = () => {
     }, 2000);
 
 }
+
+// 代码块添加复制按钮
+const addCopyButton = () => {
+    document.querySelectorAll("pre code").forEach((block: Element) => {
+        const parentNode = block.parentElement as HTMLElement;
+        // 忽略已经添加复制按钮的代码块
+        if (parentNode?.firstChild?.nodeName === "BUTTON") {
+            return;
+        }
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.textContent = "Copy";
+        parentNode.insertBefore(copyButton, block);
+        // 添加复制功能
+        copyButton.addEventListener("click", () => {
+            const code = block.textContent as string;
+            const el = document.createElement("textarea");
+            el.value = code;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand("copy");
+            document.body.removeChild(el);
+            copyButton.textContent = "Copied!";
+            setTimeout(() => {
+                copyButton.textContent = "Copy";
+            }, 2000);
+        });
+    });
+};
 
 
 const route = useRoute()

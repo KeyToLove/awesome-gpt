@@ -12,8 +12,18 @@ const littleRedBook = (prompts: promptType) => {
   return `请使用 Emoji 风格编辑以下段落，该风格以引人入胜的标题、每个段落中包含表情符号和在末尾添加相关标签为特点。段落内容为: ${prompts}`
 }
 
+const testCase = (prompts: promptType) => {
+  return `
+  接下来我将给你一个函数，你帮我使用 JEST 给这个函数写一个测试用例，注意test API的第一个参数请使用中文合理且准确的描绘具体的测试内容，使用markdown格式返回测试用例；这个函数代码为: ${prompts}`
+}
+
+const generateRegExp = (prompts: promptType) => {
+  return `
+  请帮我为以下的需求使用js生成正确的正则表达式，并且使用两句话概括该正则表达式中的知识点，答案代码部分请使用js代码块返回；我的需求是: ${prompts}`
+}
+
 const fitnessAdvice = (prompts: promptType) => {
-  return `我希望你能充当私人教练。我将为你提供一个希望通过体能训练变得更健康、更强壮、更健康的人所需要的所有信息，而你的职责是根据我提供的这些信息为其制定最佳计划。你应该运用你的运动科学知识、营养建议和其他相关因素，以便制定出适合他们的计划,这个人的信息如下: ${prompts}`
+  return `我希望你能充当私人教练。我将为你提供一个希望通过体能训练变得更健康、更强壮、更健康的人所需要的所有信息，而你的职责是根据我提供的这些信息为其制定最佳计划。你应该运用你的运动科学知识、营养建议和其他相关因素，以便制定出适合他们的计划,这个人的信息如下: ${prompts}, 请给出你的建议`
 }
 
 const writingHelper = (prompts: promptType) => {
@@ -25,6 +35,8 @@ const templateMap = {
   weeklyNewspaper: weeklyNewspaper,
   littleRedBook: littleRedBook,
   writingHelper: writingHelper,
+  testCase: testCase,
+  generateRegExp: generateRegExp,
   fitnessAdvice: fitnessAdvice,
 }
 

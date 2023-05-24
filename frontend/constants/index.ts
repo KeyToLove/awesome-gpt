@@ -36,6 +36,18 @@ export const PROMPT_MAP = [
     markdown: false,
   },
   {
+    title: '编写测试用例',
+    key: 'testCase',
+    description: '通过输入工具函数来生成JEST的测试用例',
+    markdown: true,
+  },
+  {
+    title: '编写正则表达式',
+    key: 'generateRegExp',
+    description: '通过输入信息生成对应的javascript正则表达式',
+    markdown: true,
+  },
+  {
     title: '健身教练',
     key: 'fitnessAdvice',
     description: '通过输入身高、体重、年龄等指标，来制定健身方案。',
