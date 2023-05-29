@@ -35,6 +35,7 @@
       </n-spin>
       <button @click="newChat">新话题</button>
       <button @click="generateImage">下载对话图片</button>
+      <span>本次提问预计消耗tokens: <b class="tokens-count">{{ tokensCount }}</b></span>
     </div>
   </div>
 </template>
@@ -46,6 +47,7 @@ import hljs from "highlight.js";
 import html2canvas from "html2canvas"
 import { chatApi } from "../api";
 import { generateUid, isIncludeCodeBlock } from '../util/index'
+import { calculateTokensCount } from '../util/tokenizer'
 import { USER_AVATAR, AI_AVATAR } from "../constants";
 import default_user_avatar from "../assets/user_avatar.jpeg";
 import default_ai_avatar from "../assets/ai_avatar.webp";
@@ -62,6 +64,7 @@ const route = useRoute()
 const user_avatar = localStorage.getItem(USER_AVATAR) ?? default_user_avatar;
 const ai_avatar = localStorage.getItem(AI_AVATAR) ?? default_ai_avatar;
 const render = new marked.Renderer();
+
 marked.setOptions({
   renderer: render, // 这是必填项
   gfm: true, // 启动类似于Github样式的Markdown语法
@@ -256,6 +259,16 @@ const reverseChatHistory = computed(() => {
   return copy.reverse()
 })
 
+const tokensCount = computed(() => {
+  const copy = JSON.parse(JSON.stringify(activeChatItem.value.detail))
+  copy.push({
+    role: "user",
+    content: text.value,
+  }
+  )
+  return calculateTokensCount(JSON.stringify(copy))
+})
+
 watch(activeChatItem, (newValue, oldValue) => {
   activeChatItemUid.value = newValue.uid
 })
@@ -399,6 +412,10 @@ h1 {
 
   .n-spin-container {
     display: inline-block;
+  }
+
+  .tokens-count {
+    color: red;
   }
 
   input {
