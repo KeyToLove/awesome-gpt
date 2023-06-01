@@ -58,6 +58,7 @@ const activePromptKey = ref<string>('')
 
 const prompt = ref<string>('')
 const answer = ref<string>('')
+const originalAnswer = ref<string>('')
 
 const answerBox = ref<HTMLElement>();
 
@@ -93,6 +94,7 @@ const go = () => {
         return message.info('请先选择一个角色模版')
     }
     answer.value = ''
+    originalAnswer.value = ''
     answerLoading.value = true;
     globalLoading.value = true
     conversation({ key: activePromptKey.value, prompts: prompt.value }, {
@@ -109,6 +111,8 @@ const go = () => {
             message.error(msg || "服务异常");
         },
         onFinally: () => {
+            // 记录原始答案,以便copy时保留markdown格式
+            originalAnswer.value = answer.value
             const needMarkdown = PROMPT_MAP.find(v => v.key === activePromptKey.value)?.markdown
             if (needMarkdown) {
                 answer.value = marked(answer.value)
@@ -137,8 +141,8 @@ onMounted(() => {
 const copy = () => {
     const copyButton = document.getElementById('copy-btn') as HTMLElement
     const el = document.createElement("textarea");
-    const textContent = document.querySelector('.answer')?.textContent ?? ''
-    el.value = textContent
+    // const textContent = document.querySelector('.answer')?.textContent ?? ''
+    el.value = originalAnswer.value
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
