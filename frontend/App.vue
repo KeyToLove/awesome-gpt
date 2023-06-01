@@ -7,6 +7,7 @@
             :class="{ active: checkIsActive(route.path) }">
             {{ route?.meta?.desc ?? route.name }}
           </button>
+          <img :src="logo" alt="" class="logo">
         </div>
         <router-view></router-view>
       </n-dialog-provider>
@@ -21,6 +22,7 @@ import { GlobalThemeOverrides } from "naive-ui";
 import { RouterView, useRouter, useRoute } from "vue-router";
 import { routes } from "./router";
 import Footer from "./components/Footer.vue";
+import logo from './assets/logo.jpeg'
 const router = useRouter();
 const route = useRoute();
 
@@ -49,6 +51,15 @@ const themeOverrides: GlobalThemeOverrides = {
 .nav {
   display: flex;
   font-size: 16px;
+  position: relative;
+
+  .logo{
+    position: absolute;
+    right: 20px;
+    display: block;
+    width: 200px;
+    border-radius: 4px;
+  }
 
   button {
     margin-right: 6px;
