@@ -41,7 +41,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { marked } from "marked";
-import { useMessage,NTooltip } from "naive-ui";
+import { useMessage,NTooltip,NSpin } from "naive-ui";
 import hljs from "highlight.js";
 import html2canvas from "html2canvas"
 import { chatApi } from "../api";

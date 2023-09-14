@@ -12,9 +12,9 @@
     <p>自定义User头像 | 自定义AI头像 | 当前User头像 | 当前AI头像</p>
     <div class="flex">
       <n-upload :default-file-list="userPreviewFileList" list-type="image-card" accept=".jpg, .jpeg, .png" :max="1"
-        :on-remove="() => onMove(1)" :on-change="(options: any, e: InputEvent) => onChange(1, options, e)" />
+        :on-remove="() => onMove(1)" :on-change="(options: any) => onChange(1, options)" />
       <n-upload :default-file-list="AIPreviewFileList" list-type="image-card" accept=".jpg, .jpeg, .png" :max="1"
-        :on-remove="() => onMove(2)" :on-change="(options: any, e: InputEvent) => onChange(2, options, e)" />
+        :on-remove="() => onMove(2)" :on-change="(options: any) => onChange(2, options)" />
       <img v-if="currentUserAvatar" :src="currentUserAvatar" alt="当前User Avatar" title="当前User Avatar" class="avatar" />
       <img v-if="currentAIAvatar" :src="currentAIAvatar" alt="当前AI Avatar" title="当前AI Avatar" srcset="" class="avatar" />
     </div>
@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useMessage, UploadFileInfo } from "naive-ui";
+import { useMessage, UploadFileInfo,NUpload } from "naive-ui";
 import {
   OPENAI_KEY,
   UPDATE_OPENAI_KEY_TIPS,
@@ -54,7 +54,7 @@ const onMove = (type: number): boolean => {
   return true;
 };
 
-const onChange = async (type: number, options: any, e: InputEvent) => {
+const onChange = async (type: number, options: any) => {
   const { file } = options.file;
   try {
     const result = (await getBase64(file as File)) as string;

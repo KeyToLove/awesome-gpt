@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { PROMPT_MAP, PROMPT_COLOR_MAP, OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS, type promptMapItem } from '../constants'
-import { useMessage,NTooltip } from 'naive-ui'
+import { useMessage,NTooltip,NSpin } from 'naive-ui'
 import { nextTick, onMounted, ref } from 'vue';
 import { conversation } from '../api'
 import { marked } from "marked";
