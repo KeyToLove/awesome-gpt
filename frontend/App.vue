@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { GlobalThemeOverrides } from "naive-ui";
+import { GlobalThemeOverrides,NConfigProvider,NMessageProvider } from "naive-ui";
 import { RouterView, useRouter, useRoute } from "vue-router";
 import { routes } from "./router";
 import Footer from "./components/Footer.vue";
