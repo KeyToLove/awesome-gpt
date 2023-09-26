@@ -65,3 +65,6 @@ vercel
 ```
 
 点击终端生成的预览链接，使用第三步生成的 `OPENAI_API_KEY` 即可体验
+
+## blog
+[DIY Chatgpt Web 应用](https://keytolove.github.io/2023/03/29/DIY%20Chatgpt%20Web%20%E5%BA%94%E7%94%A8/)
