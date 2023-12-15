@@ -54,9 +54,6 @@ devDependencies:
   cors:
     specifier: ^2.8.5
     version: 2.8.5
-  gpt-tokenizer:
-    specifier: ^2.0.0
-    version: 2.0.0
   typescript:
     specifier: ^4.9.3
     version: 4.9.5
@@ -1076,12 +1073,6 @@ packages:
       is-glob: 4.0.3
     dev: true
 
-  /gpt-tokenizer@2.0.0:
-    resolution: {integrity: sha512-41odV6Mma0DUvUdfV4Z3F7cWUyXZSXGdP72coAxBhd6rCKZSu2HuPDkE8X1MA3j64h7Vm//T8IDngMimycPEGQ==}
-    dependencies:
-      rfc4648: 1.5.2
-    dev: true
-
   /graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
     requiresBuild: true
@@ -1430,10 +1421,6 @@ packages:
   /reusify@1.0.4:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
-    dev: true
-
-  /rfc4648@1.5.2:
-    resolution: {integrity: sha512-tLOizhR6YGovrEBLatX1sdcuhoSCXddw3mqNVAcKxGJ+J0hFeJ+SjeWCv5UPA/WU3YzWPPuCVYgXBKZUPGpKtg==}
     dev: true
 
   /rollup@3.20.0:
