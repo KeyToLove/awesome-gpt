@@ -10,6 +10,9 @@ dependencies:
   '@vercel/edge-config':
     specifier: ^0.1.9
     version: 0.1.9
+  '@vercel/speed-insights':
+    specifier: ^1.0.2
+    version: 1.0.2
   canvas-confetti:
     specifier: ^1.6.0
     version: 1.6.0
@@ -468,6 +471,11 @@ packages:
       - '@swc/wasm'
       - encoding
     dev: true
+
+  /@vercel/speed-insights@1.0.2:
+    resolution: {integrity: sha512-y5HWeB6RmlyVYxJAMrjiDEz8qAIy2cit0fhBq+MD78WaUwQvuBnQlX4+5MuwVTWi46bV3klaRMq83u9zUy1KOg==}
+    requiresBuild: true
+    dev: false
 
   /@vercel/static-config@2.0.14:
     resolution: {integrity: sha512-Ih0H/V8geRjsNpvD73dphV+y0Pe21RXIJEUW/XI0y7ZrYzLbYQt4AAIvsgfDqcQNm4xEizh3sEXArPWEp18bdQ==}

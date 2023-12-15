@@ -1,4 +1,5 @@
 <template>
+  <SpeedInsights />
   <n-config-provider :theme-overrides="themeOverrides">
     <n-message-provider>
       <n-dialog-provider>
@@ -17,6 +18,7 @@
 </template>
 
 <script lang="ts" setup>
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 import { computed } from "vue";
 import { GlobalThemeOverrides,NConfigProvider,NMessageProvider } from "naive-ui";
 import { RouterView, useRouter, useRoute } from "vue-router";
