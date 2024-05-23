@@ -33,7 +33,7 @@
 1. 克隆或者 fork 本项目
 2. 安装依赖 `pnpm install`
 
-- 由于项目采用 **vercel** `Edge Functions`的模式，因此你需要事先具备 `vercel` 环境,可通过 `npm i vercel -g` 安装
+- 由于项目基于 `Vercel Functions (Edge Runtime)` ，因此你需要事先具备 `vercel` 环境,可通过 `npm i vercel -g` 安装
 
 3. 获取 `OPENAI_API_KEY` 信息
 
@@ -53,9 +53,9 @@ vercel dev
 
 <img src="./assets/vercel-dev.jpg">
 
-<b style="color:pink">由于近期 OpenAI Api 访问受限，国内用户本地访问可能会出现超时</b>
+<b style="color:pink">API 请求链路：client -> vercel devServer -> vercel Serverless -> vercel devServer -> client 其中第二到第三步由于node环境下请求未走proxy，会存在超时情况</b>
 
-5. 部署 vercel 运行（推荐）
+1. 部署 vercel（推荐）
    采用 客户端请求 `vercel` -> `vercel` 云函数请求 OpenAI API -> 结果返回客户端来绕开 Api 访问受限等问题
 
 终端运行,等待`vercel` build 完成即可预览或者发布

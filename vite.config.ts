@@ -16,4 +16,12 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000', // vercel dev default listen prot 3000
+        changeOrigin: true
+      }
+    }
+  }
 })
