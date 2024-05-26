@@ -36,10 +36,11 @@
 </template>
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import { PROMPT_MAP, PROMPT_COLOR_MAP, OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS, type promptMapItem } from '../constants'
-import { useMessage,NTooltip,NSpin } from 'naive-ui'
+import { PROMPT_MAP, PROMPT_COLOR_MAP, OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS } from '../constants'
+import { useMessage, NTooltip, NSpin } from 'naive-ui'
 import { nextTick, onMounted, ref } from 'vue';
 import { conversation } from '../api'
+import { promptMapItem } from "../types";
 import { marked } from "marked";
 import hljs from "highlight.js";
 const render = new marked.Renderer();

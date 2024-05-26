@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { computed, ref, nextTick } from "vue";
 import { generateImage, conversation } from "../api";
-import { useMessage ,NSpin} from "naive-ui";
+import { useMessage, NSpin } from "naive-ui";
 import { OPENAI_KEY, WITHOUT_OPENAI_KEY_TIPS } from "../constants";
 import { useRoute } from "vue-router";
 const userOpenAIKey = localStorage.getItem(OPENAI_KEY);

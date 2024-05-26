@@ -1,4 +1,5 @@
-import { type promptInfoType } from '../constants'
+import { promptInfoType } from '../types'
+import { OPENAI_CHAT_MODEL } from '../constants';
 
 export async function generateImage(prompt: string, config: any) {
   const { userOpenAIKey } = config
@@ -38,6 +39,7 @@ export async function chatApi(
     body: JSON.stringify({
       messages,
       api_key: userOpenAIKey,
+      model:window.localStorage.getItem(OPENAI_CHAT_MODEL) || 'gpt-3.5-turbo-0125'
     }),
   })
   if (!response.ok) {
@@ -74,6 +76,7 @@ export async function conversation(promptInfo: promptInfoType, config: any) {
     body: JSON.stringify({
       promptInfo,
       api_key: userOpenAIKey,
+      model:window.localStorage.getItem(OPENAI_CHAT_MODEL) || 'gpt-3.5-turbo-0125'
     }),
   })
   if (!response.ok) {

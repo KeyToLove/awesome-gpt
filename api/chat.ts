@@ -4,10 +4,10 @@ export const config = {
 }
 
 const chat = async (req: Request) => {
-  const { messages, api_key } = await req.json()
+  const { messages, api_key, model } = await req.json()
 
   const payload: OpenAIStreamPayload = {
-    model: 'gpt-3.5-turbo',
+    model,
     messages,
     temperature: 0.7,
     top_p: 1,

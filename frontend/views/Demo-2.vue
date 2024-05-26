@@ -3,7 +3,7 @@
     <h1>{{ route.meta.desc }}</h1>
     <div class="flex">
       <ul class="history">
-        <n-tooltip placement="right" trigger="hover" v-for="item in  reverseChatHistory" :key="item.uid"
+        <n-tooltip placement="right" trigger="hover" v-for="item in reverseChatHistory" :key="item.uid"
           :style="{ maxWidth: '400px' }">
           <template #trigger>
             <li @click="handleClickHistoryItem(item)" :class="activeChatItemUid === item.uid ? 'active' : ''">
@@ -16,7 +16,7 @@
         </n-tooltip>
       </ul>
       <div class="content" ref="contentRef">
-        <div v-for="( item, index ) in  activeChatItem.detail "
+        <div v-for="( item, index ) in activeChatItem.detail "
           :class="['item', item.role === 'assistant' ? 'item-ai' : 'item-user']" :key="index">
           <img class="item-image" :src="item.role === 'user' ? user_avatar : ai_avatar" alt="" />
           <div class="item-text" v-if="item.role === 'user'">
@@ -41,7 +41,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { marked } from "marked";
-import { useMessage,NTooltip,NSpin } from "naive-ui";
+import { useMessage, NTooltip, NSpin } from "naive-ui";
 import hljs from "highlight.js";
 import html2canvas from "html2canvas"
 import { chatApi } from "../api";
@@ -53,10 +53,10 @@ import deleteIcon from '../assets/delete.svg'
 import {
   OPENAI_KEY,
   OPENAI_CHAT_HISTORY,
-  ChatItem,
   WITHOUT_OPENAI_KEY_TIPS,
   HISTORY_MAX_SIZE
 } from "../constants";
+import { ChatItem } from '../types';
 import { useRoute } from "vue-router";
 const route = useRoute()
 const user_avatar = localStorage.getItem(USER_AVATAR) ?? default_user_avatar;

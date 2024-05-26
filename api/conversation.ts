@@ -7,11 +7,11 @@ export const config = {
 const conversation = async (req: Request) => {
   let { promptInfo, api_key } = await req.json()
 
-  const { key, prompts } = promptInfo
+  const { key, prompts, model } = promptInfo
 
   const prompt = generatePrompt(key, prompts)
   const payload: OpenAIStreamPayload = {
-    model: 'gpt-3.5-turbo',
+    model,
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.7,
     top_p: 1,

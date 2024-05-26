@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { SpeedInsights } from '@vercel/speed-insights/vue';
 import { computed } from "vue";
-import { GlobalThemeOverrides,NConfigProvider,NMessageProvider } from "naive-ui";
+import { GlobalThemeOverrides, NConfigProvider, NMessageProvider, NDialogProvider } from "naive-ui";
 import { RouterView, useRouter, useRoute } from "vue-router";
 import { routes } from "./router";
 import Footer from "./components/Footer.vue";
@@ -55,7 +55,7 @@ const themeOverrides: GlobalThemeOverrides = {
   font-size: 16px;
   position: relative;
 
-  .logo{
+  .logo {
     position: absolute;
     right: 20px;
     display: block;

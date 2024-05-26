@@ -2,6 +2,8 @@ export const OPENAI_KEY = 'OPENAI_KEY'
 
 export const OPENAI_CHAT_HISTORY = 'OPENAI_CHAT_HISTORY'
 
+export const OPENAI_CHAT_MODEL = 'OPENAI_CHAT_MODEL'
+
 export const WITHOUT_OPENAI_KEY_TIPS =
   'openai key 不能为空,请先在 Config 页进行配置'
 
@@ -63,27 +65,3 @@ export const PROMPT_COLOR_MAP = [
   '#cf92e0',
   '#127f82',
 ]
-
-export type chatItemDetail = {
-  role: 'user' | 'assistant'
-  content: string
-}
-
-export interface ChatItem {
-  uid: number
-  createTime?: number
-  updateTime?: number
-  detail: chatItemDetail[]
-}
-
-export type promptMapItem = {
-  title: string
-  key: string
-  description: string
-  markdown: boolean
-}
-
-export type promptInfoType = {
-  key: string
-  prompts: string | string[]
-}
