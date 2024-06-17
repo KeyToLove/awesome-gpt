@@ -5,9 +5,9 @@ export const config = {
 }
 
 const conversation = async (req: Request) => {
-  let { promptInfo, api_key } = await req.json()
+  let { promptInfo, api_key, model } = await req.json()
 
-  const { key, prompts, model } = promptInfo
+  const { key, prompts } = promptInfo
 
   const prompt = generatePrompt(key, prompts)
   const payload: OpenAIStreamPayload = {

@@ -46,10 +46,10 @@ const openaiKey = ref("");
 const chatModel = ref("")
 
 const modelOptions = [
-  // {
-  //   label: "gpt-4o",
-  //   value: "gpt-4o"
-  // },
+  {
+    label: "gpt-4o",
+    value: "gpt-4o"
+  },
   {
     label: "gpt-4-turbo",
     value: "gpt-4-turbo-preview"
