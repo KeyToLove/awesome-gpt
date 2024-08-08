@@ -2,6 +2,7 @@ import OpenAIStream, { OpenAIStreamPayload } from '../utils/openAIStreams'
 import generatePrompt from '../utils/generatePrompt'
 export const config = {
   runtime: 'edge',
+  regions: ['iad1', 'hnd1'],
 }
 
 const conversation = async (req: Request) => {

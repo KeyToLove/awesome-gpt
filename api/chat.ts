@@ -1,6 +1,7 @@
 import OpenAIStream, { OpenAIStreamPayload } from '../utils/openAIStreams'
 export const config = {
   runtime: 'edge',
+  regions: ['iad1', 'hnd1'],
 }
 
 const chat = async (req: Request) => {
