@@ -70,7 +70,7 @@ marked.setOptions({
   sanitize: false, // 原始输出，忽略HTML标签（关闭后，可直接渲染HTML标签）
   // 高亮的语法规范
   // TODO: OpenAI 代码块有时候不会正确返回语言格式，会导致highlight解析出错，如果未正确返回格式现默认当javascript进行解析
-  highlight: (code, lang) => hljs.highlight(code, { language: lang || 'javascript' }).value,
+  highlight: (code, lang) => hljs.highlight(code, { language: ( lang === 'vue' ? 'html' : lang ) || 'javascript' }).value,
 });
 const userOpenAIKey = localStorage.getItem(OPENAI_KEY);
 const message = useMessage();
